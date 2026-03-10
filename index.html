@@ -1,78 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>まぐろ船追跡</title>
-
-<style>
-body{
-font-family:sans-serif;
-padding:20px;
-}
-
-input,button{
-font-size:18px;
-padding:10px;
-width:100%;
-margin-top:10px;
-}
-
-#result{
-margin-top:20px;
-}
-</style>
-
-</head>
-
-<body>
-
-<h2>🐟 まぐろ船追跡</h2>
-
-<input id="ship" placeholder="船名を入力">
-
-<button onclick="search()">検索</button>
-
-<div id="result"></div>
-
 <script>
 
-async function search(){
+function search(){
 
 let ship=document.getElementById("ship").value;
 
-let url="https://api.datalastic.com/api/v0/vessel?name="+ship+"&api-key=demo";
-
-let res=await fetch(url);
-
-let data=await res.json();
-
-if(!data.data || data.data.length==0){
-
-document.getElementById("result").innerHTML="船が見つかりません";
-
+if(ship==""){
+document.getElementById("result").innerHTML="船名を入力してください";
 return;
-
 }
-
-let vessel=data.data[0];
 
 document.getElementById("result").innerHTML=
 
-"船名："+vessel.name+"<br>"+
-"IMO："+vessel.imo+"<br>"+
-"MMSI："+vessel.mmsi;
-
-}
-let ship=document.getElementById("ship").value;
-
-document.getElementById("result").innerHTML=
-"船名："+ship+"<br>"+
-"現在位置：取得中...<br>"+
-"入港予測：計算中...";
+"船名："+ship+"<br><br>"+
+"現在位置：取得準備中<br>"+
+"入港予測：計算準備中<br><br>"+
+"※AIS連携をこれから追加します";
 
 }
 
 </script>
-
-</body>
-</html>
