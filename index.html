@@ -36,8 +36,33 @@ margin-top:20px;
 
 <script>
 
-function search(){
+async function search(){
 
+let ship=document.getElementById("ship").value;
+
+let url="https://api.datalastic.com/api/v0/vessel?name="+ship+"&api-key=demo";
+
+let res=await fetch(url);
+
+let data=await res.json();
+
+if(!data.data || data.data.length==0){
+
+document.getElementById("result").innerHTML="船が見つかりません";
+
+return;
+
+}
+
+let vessel=data.data[0];
+
+document.getElementById("result").innerHTML=
+
+"船名："+vessel.name+"<br>"+
+"IMO："+vessel.imo+"<br>"+
+"MMSI："+vessel.mmsi;
+
+}
 let ship=document.getElementById("ship").value;
 
 document.getElementById("result").innerHTML=
