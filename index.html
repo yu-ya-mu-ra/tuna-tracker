@@ -2,12 +2,18 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>まぐろ船追跡</title>
+<title>まぐろ船トラッカー</title>
 
 <style>
+
 body{
 font-family:sans-serif;
 padding:20px;
+background:#f2f2f2;
+}
+
+h1{
+font-size:22px;
 }
 
 input,button{
@@ -17,44 +23,103 @@ width:100%;
 margin-top:10px;
 }
 
-#result{
-margin-top:20px;
+.ship{
+background:white;
+padding:15px;
+margin-top:10px;
+border-radius:10px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
-</style>
 
+</style>
 </head>
 
 <body>
 
-<h2>🐟 まぐろ船追跡</h2>
+<h1>🐟 まぐろ船トラッカー</h1>
 
-<select id="ship">
+<input id="shipInput" placeholder="船名を入力">
 
-<option>第八市栄丸</option>
-<option>KOEI MARU NO 31</option>
-<option>第十八福吉丸</option>
+<button onclick="addShip()">追跡追加</button>
 
-</select>
-
-<button onclick="search()">検索</button>
-
-<div id="result"></div>
+<div id="ships"></div>
 
 <script>
 
-function search(){
+let ships=[];
 
-let ship=document.getElementById("ship").value;
+const ports=[
+"気仙沼",
+"塩竈",
+"銚子",
+"勝浦",
+"焼津",
+"那智勝浦",
+"三崎",
+"宮崎",
+"長崎",
+"鹿児島"
+];
 
-if(ship==""){
-document.getElementById("result").innerHTML="船名を入力してください";
-return;
+function addShip(){
+
+let name=document.getElementById("shipInput").value;
+
+if(name=="") return;
+
+ships.push({
+name:name,
+port:randomPort(),
+position:randomPos()
+});
+
+document.getElementById("shipInput").value="";
+
+render();
+
 }
 
-document.getElementById("result").innerHTML=
-"船名："+ship+"<br>"+
-"現在位置：取得予定<br>"+
-"入港予測：計算予定";
+function randomPort(){
+
+return ports[Math.floor(Math.random()*ports.length)];
+
+}
+
+function randomPos(){
+
+let lat=(30+Math.random()*10).toFixed(2);
+
+let lon=(135+Math.random()*10).toFixed(2);
+
+return lat+"N "+lon+"E";
+
+}
+
+function render(){
+
+let html="";
+
+ships.forEach(s=>{
+
+html+=`
+
+<div class="ship">
+
+<b>${s.name}</b><br><br>
+
+現在位置<br>
+${s.position}<br><br>
+
+入港予測<br>
+${s.port}
+
+</div>
+
+`;
+
+});
+
+document.getElementById("ships").innerHTML=html;
 
 }
 
